@@ -22,21 +22,25 @@ export default function HomePage() {
     // Show loading state while checking auth
     if (!isLoaded) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Image
-                    src="/logo.svg"
-                    width={120}
-                    height={120}
-                    alt="Logo"
-                    className="animate-pulse duration-700"
-                />
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white">
+                <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading...</p>
+                </div>
             </div>
         );
     }
 
     // Don't render if signed in (will redirect)
     if (isSignedIn) {
-        return null;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white">
+                <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -45,7 +49,9 @@ export default function HomePage() {
             <header className="container mx-auto px-4 py-6">
                 <nav className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
-                        <Image src="/logo.svg" alt="Logo" height={50} width={50} />
+                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-2xl font-bold">B</span>
+                        </div>
                         <span className="font-semibold text-2xl">Board</span>
                     </div>
                     <Link href="/dashboard">
@@ -65,7 +71,7 @@ export default function HomePage() {
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                     Collaborate in real-time, visualize ideas, and bring your team together with our powerful whiteboard platform.
                 </p>
-                <div className="flex gap-4 justify-center">
+                <div className="flex gap-4 justify-center flex-wrap">
                     <Link href="/dashboard">
                         <Button size="lg" className="text-lg px-8">
                             Start Creating
