@@ -81,3 +81,18 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* Customize Chatbase widget position */
+#chatbase-bubble-button {
+  bottom: 20px !important;
+  right: 20px !important;
+}
+
+/* Hide on mobile if needed */
+@media (max-width: 768px) {
+  #chatbase-bubble-button {
+    bottom: 10px !important;
+    right: 10px !important;
+    transform: scale(0.9);
+  }
+}
