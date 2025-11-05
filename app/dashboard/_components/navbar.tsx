@@ -41,7 +41,14 @@ export const Navbar = () => {
                 />
             </div>
             {organization && <InviteButton />}
-            <UserButton />
+            <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                    elements: {
+                        avatarBox: "h-10 w-10",
+                    },
+                }}
+            />
         </div>
     );
 };
