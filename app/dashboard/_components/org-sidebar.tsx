@@ -8,15 +8,17 @@ import { Poppins } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const font = Poppins({
     subsets: ["latin"],
     weight: ["600"],
 });
 
-export const OrgSidebar = () => {
+function OrgSidebarContent() {
     const searchParams = useSearchParams();
     const favorite = searchParams.get("favorites");
+
     return (
         <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5 mr-5">
             <Link href="/">
@@ -83,5 +85,19 @@ export const OrgSidebar = () => {
                 </Button>
             </div>
         </div>
+    );
+}
+
+export const OrgSidebar = () => {
+    return (
+        <Suspense fallback={
+            <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5 mr-5">
+                <div className="animate-pulse">
+                    <div className="h-12 bg-gray-200 rounded"></div>
+                </div>
+            </div>
+        }>
+            <OrgSidebarContent />
+        </Suspense>
     );
 };

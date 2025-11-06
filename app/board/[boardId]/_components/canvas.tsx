@@ -196,8 +196,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                 cursor: point,
                 pencilDraft:
                     pencilDraft.length === 1 &&
-                    pencilDraft[0][0] === point.x &&
-                    pencilDraft[0][1] === point.y
+                        pencilDraft[0][0] === point.x &&
+                        pencilDraft[0][1] === point.y
                         ? pencilDraft
                         : [...pencilDraft, [point.x, point.y, e.pressure]],
             });
@@ -341,7 +341,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     );
 
     const onPointerUp = useMutation(
-        ({}, e) => {
+        ({ }, e) => {
             const point = pointerEventToCanvasPoint(e, camera);
 
             if (
@@ -545,8 +545,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         return () => {
             document.removeEventListener("keydown", onKeyDown);
         };
-    }, [history]);
-
+    }, [history, canvasState.mode, duplicateLayers, moveSelectedLayers]);
     return (
         <main className="h-full w-full relative bg-neutral-100 touch-none">
             <Info boardId={boardId} exportAsPng={exportAsPng} />

@@ -36,7 +36,7 @@ const CustomColorPicker = forwardRef<
 
         const parsedValue = useMemo(() => {
             return value || colorToCss(lastUsedColor);
-        }, [value]);
+        }, [value, lastUsedColor]);
 
         return (
             <Popover onOpenChange={setOpen} open={open}>
@@ -79,12 +79,12 @@ const CustomColorPicker = forwardRef<
 
 const DebouncedPicker = ({ color, onChange }: any) => {
     const [value, setValue] = useState(color);
-  
+
     useDebouncyEffect(() => onChange(value), 200, [value]);
-  
+
     return <HexColorPicker color={value} onChange={setValue} />;
-  };
-  
+};
+
 
 CustomColorPicker.displayName = "ColorPicker";
 

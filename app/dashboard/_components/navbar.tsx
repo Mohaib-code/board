@@ -7,6 +7,7 @@ import {
 } from "@clerk/nextjs";
 import { SearchInput } from "./search-input";
 import { InviteButton } from "./invite-button";
+import { Suspense } from "react";
 
 export const Navbar = () => {
     const { organization } = useOrganization();
@@ -14,7 +15,11 @@ export const Navbar = () => {
     return (
         <div className="flex items-center gap-x-4 p-5">
             <div className="hidden lg:flex lg:flex-1">
-                <SearchInput />
+                <Suspense fallback={
+                    <div className="w-full h-10 bg-gray-100 rounded-md animate-pulse"></div>
+                }>
+                    <SearchInput />
+                </Suspense>
             </div>
             <div className="block lg:hidden flex-1">
                 <OrganizationSwitcher

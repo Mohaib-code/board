@@ -135,7 +135,7 @@ export default function HomePage() {
                             </span>
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Built-in intelligence that accelerates your team's creativity and productivity
+                            Built-in intelligence that accelerates your team&apos;s creativity and productivity
                         </p>
                     </div>
 
@@ -233,7 +233,7 @@ export default function HomePage() {
                                     <ChatBubble
                                         avatar="🤖"
                                         name="AI Assistant"
-                                        message="I've generated 3 diagram options for you. Would you like to see them?"
+                                        message="I&apos;ve generated 3 diagram options for you. Would you like to see them?"
                                         time="Just now"
                                         side="left"
                                         isAI
@@ -522,10 +522,10 @@ function ChatBubble({
                     <span className="text-xs text-gray-500">{time}</span>
                 </div>
                 <div className={`px-4 py-3 rounded-2xl max-w-sm ${side === 'right'
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                        : isAI
-                            ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-gray-900 border-2 border-purple-200'
-                            : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    : isAI
+                        ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-gray-900 border-2 border-purple-200'
+                        : 'bg-gray-100 text-gray-900'
                     }`}>
                     <p className="text-sm">{message}</p>
                 </div>

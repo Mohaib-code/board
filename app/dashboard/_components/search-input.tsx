@@ -34,7 +34,7 @@ export const SearchInput = () => {
     useEffect(() => {
         const url = qs.stringifyUrl(
             {
-                url: "/dashboard", // CHANGED FROM "/"
+                url: "/dashboard",
                 query: {
                     search: value,
                 },
