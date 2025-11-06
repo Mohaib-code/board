@@ -9,22 +9,20 @@ export default authMiddleware({
     ignoredRoutes: [],
 
     afterAuth(auth, req) {
-        // Handle users who aren't authenticated
-        if (!auth.userId && !auth.isPublicRoute) {
-            const signInUrl = new URL('/sign-in', req.url);
-            signInUrl.searchParams.set('redirect_url', req.url);
-            return NextResponse.redirect(signInUrl);
+        const isPublicRoute = req.nextUrl.pathname === "/";
+        const isDashboardRoute = req.nextUrl.pathname.startsWith("/dashboard");
+        const isBoardRoute = req.nextUrl.pathname.startsWith("/board");
+
+        // If user is NOT authenticated and trying to access protected routes
+        if (!auth.userId && (isDashboardRoute || isBoardRoute)) {
+            const homeUrl = new URL('/', req.url);
+            return NextResponse.redirect(homeUrl);
         }
 
-        // If user is signed in and trying to access the homepage, redirect to dashboard
-        if (auth.userId && req.nextUrl.pathname === "/") {
+        // If user IS authenticated and trying to access the homepage
+        if (auth.userId && isPublicRoute) {
             const dashboard = new URL("/dashboard", req.url);
             return NextResponse.redirect(dashboard);
-        }
-
-        // Allow users to access dashboard and boards if authenticated
-        if (auth.userId && !auth.isPublicRoute) {
-            return NextResponse.next();
         }
 
         return NextResponse.next();
@@ -33,9 +31,7 @@ export default authMiddleware({
 
 export const config = {
     matcher: [
-        // Skip Next.js internals and all static files
         '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-        // Always run for API routes
         '/(api|trpc)(.*)',
     ],
 };
