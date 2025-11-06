@@ -1,18 +1,26 @@
 "use client";
 
-import qs from "query-string";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
 
 export const SearchInput = () => {
     const router = useRouter();
-    const [value, setValue] = useDebounceValue("", 500);
+    const searchParams = useSearchParams();
+    const [debouncedValue, setValue] = useDebounceValue("", 500);
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        const currentSearch = searchParams.get("search") || "";
+        setInputValue(currentSearch);
+    }, [searchParams]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
+        const value = e.target.value;
+        setInputValue(value);
+        setValue(value);
     };
 
     useEffect(() => {
@@ -25,28 +33,28 @@ export const SearchInput = () => {
         };
 
         document.addEventListener("keydown", handleKeyDown);
-
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, []);
 
     useEffect(() => {
-        const url = qs.stringifyUrl(
-            {
-                url: "/dashboard",
-                query: {
-                    search: value,
-                },
-            },
-            {
-                skipEmptyString: true,
-                skipNull: true,
-            }
-        );
+        const favorites = searchParams.get("favorites");
+        const params = new URLSearchParams();
+
+        if (debouncedValue) {
+            params.set("search", debouncedValue);
+        }
+
+        if (favorites) {
+            params.set("favorites", favorites);
+        }
+
+        const queryString = params.toString();
+        const url = queryString ? `/dashboard?${queryString}` : "/dashboard";
 
         router.push(url);
-    }, [value, router]);
+    }, [debouncedValue, router, searchParams]);
 
     return (
         <div className="w-full relative">
@@ -54,6 +62,7 @@ export const SearchInput = () => {
             <Input
                 className="w-full pl-9"
                 placeholder="Search boards"
+                value={inputValue}
                 onChange={handleChange}
             />
         </div>

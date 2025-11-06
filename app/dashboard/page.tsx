@@ -4,16 +4,17 @@ import { useOrganization } from "@clerk/nextjs";
 import { EmptyOrg } from "./_components/empty-org";
 import { BoardList } from "./_components/board-list";
 import { Loader } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-interface DashboardPageProps {
-    searchParams: {
-        search?: string;
-        favorites?: string;
-    };
-}
-
-const DashboardPage = ({ searchParams }: DashboardPageProps) => {
+function DashboardContent() {
+    const searchParams = useSearchParams();
     const { organization, isLoaded } = useOrganization();
+
+    const searchParamsObject = {
+        search: searchParams.get("search") || undefined,
+        favorites: searchParams.get("favorites") || undefined,
+    };
 
     // Show loading state while checking authentication
     if (!isLoaded) {
@@ -29,13 +30,24 @@ const DashboardPage = ({ searchParams }: DashboardPageProps) => {
             {!organization ? (
                 <EmptyOrg />
             ) : (
-                <BoardList orgId={organization.id} query={searchParams} />
+                <BoardList orgId={organization.id} query={searchParamsObject} />
             )}
         </div>
     );
-};
+}
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
+const DashboardPage = () => {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex-1 h-[calc(100%-80px)] p-5 flex items-center justify-center">
+                    <Loader className="h-8 w-8 text-muted-foreground animate-spin" />
+                </div>
+            }
+        >
+            <DashboardContent />
+        </Suspense>
+    );
+};
 
 export default DashboardPage;
